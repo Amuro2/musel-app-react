@@ -16,6 +16,7 @@ function useAudioContext(
   loopStart,
   loopEnd,
   isPlaying,
+  isStartTimeChanging,
 ) {
   const [ audioContext, setAudioContext ] = useState(null);
   const [ gainNode, setGainNode ] = useState(null);
@@ -127,7 +128,7 @@ function useAudioContext(
 
   // Creates bufferSource when decoding a new audio data / restarting at a specific time.
   useEffect(() => {
-    if(audioContext && audioContext.state !== "closed" && audioBuffer && gainNode && isPlaying) {
+    if(audioContext && audioContext.state !== "closed" && audioBuffer && gainNode && !isStartTimeChanging) {
       const bufferSource = audioContext.createBufferSource();
 
       bufferSource.buffer = audioBuffer;
@@ -154,7 +155,7 @@ function useAudioContext(
     audioBuffer,
     startTime,
     audioContext, gainNode,
-    isPlaying,
+    isStartTimeChanging,
   ]);
 
   // Updates bufferSource's loopStart property.
