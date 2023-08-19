@@ -38,6 +38,7 @@ const SongPlayer = ({
     loopStart,
     loopEnd,
     isActuallyPlaying,
+    isTimeControlled,
   );
 
   useEffect(() => {
