@@ -4,6 +4,8 @@ import { usePostSongMutation } from "../services/songs";
 
 import { DURATION } from "../constants/loop-params-types";
 
+import usePopup from "../hooks/use-popup";
+
 const SongCreateForm = (props) => {
   const {
     title,
@@ -15,6 +17,8 @@ const SongCreateForm = (props) => {
 
   const [ postSong ] = usePostSongMutation();
 
+  const popup = usePopup();
+
   async function handleSubmit() {
     const res = await postSong({
       title,
@@ -24,16 +28,25 @@ const SongCreateForm = (props) => {
       file,
     });
 
-    // TODO success/failure notification
-    if(res) {}
+    if(!res?.error) {
+      popup.success("The song has been created.");
+    } else if(res?.error?.status === 400) {
+      popup.failure("Invalid form. (Please ensure an audio file has been imported and the title is valid.)");
+    } else {
+      popup.failure("An error occured.");
+    }
   }
 
   return (
-    <SongForm
-      {...props}
-      handleSubmit={handleSubmit}
-      initialParamsType={DURATION}
-    />
+    <>
+      <SongForm
+        {...props}
+        handleSubmit={handleSubmit}
+        initialParamsType={DURATION}
+      />
+
+      {popup.node}
+    </>
   );
 };
 
