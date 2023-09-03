@@ -40,7 +40,7 @@ const SongFileForm = ({
       event.preventDefault();
 
       const musicFiles = Array.from(event.dataTransfer.files).filter((file) => {
-        return file.type.match(/^audio\//) !== null;
+        return file.type.match(/^(audio|video)\//) !== null;
       });
 
       if(musicFiles.length > 0) {
@@ -50,7 +50,7 @@ const SongFileForm = ({
 
     function onPaste(event) {
       const musicFiles = Array.from(event.clipboardData.items).filter((item) => {
-        return item.type.match(/^audio\//) !== null;
+        return item.type.match(/^(audio|video)\//) !== null;
       }).map((item) => {
         return item.getAsFile();
       });
@@ -73,7 +73,7 @@ const SongFileForm = ({
 
   function handleFileChange(event) {
     const musicFiles = Array.from(event.target.files).filter((file) => {
-      return file.type.match(/^audio\//) !== null;
+      return file.type.match(/^(audio|video)\//) !== null;
     });
 
     if(musicFiles.length > 0) {
